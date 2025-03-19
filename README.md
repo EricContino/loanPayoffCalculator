@@ -1,2 +1,2 @@
-# mortgagePayoffCalculator
-A CLI tool to calculator the when a mortgage will be paid off
+# loanPayoffCalculator
+A CLI tool to calculator the when a loan will be paid off
