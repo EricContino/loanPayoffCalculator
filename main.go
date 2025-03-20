@@ -4,6 +4,8 @@ import (
     "flag"
     "fmt"
     "os"
+
+    "github.com/EricContino/loanPayoffCalculator/internal/money"
 )
 
 func main() {
@@ -31,6 +33,24 @@ func main() {
     fmt.Println(*origLoanTermPtr)
     fmt.Println(*lumpSumPtr)
     fmt.Println(*monthlyExtraPtr)
+    fmt.Println(*startMonthPtr)
+    fmt.Println(*startYearPtr)
+
+    monthlyInterest := *interestPtr / 1200
+    fmt.Printf("Monthly interest: %f\n", monthlyInterest)
+
+    monthlyPayment := money.TotalMonthlyPayment(*origLoanAmtPtr, monthlyInterest, *origLoanTermPtr)
+    fmt.Printf("Monthly payment: %.2f\n", monthlyPayment)
+
+    principlePayment := money.PrinciplePayment(monthlyPayment, *origLoanAmtPtr, monthlyInterest)
+    fmt.Printf("Principle Payment: %.2f\n", principlePayment)
+
+    totalInt, numPayments := money.Payoff(*origLoanAmtPtr, monthlyInterest, monthlyPayment, 0, 0)
+    fmt.Printf("Total payments: %d Total Interest: %.2f\n", numPayments, totalInt)
+
+    totalInt, numPayments = money.Payoff(*origLoanAmtPtr, monthlyInterest, monthlyPayment, *lumpSumPtr, *monthlyExtraPtr)
+    fmt.Printf("Total payments: %d Total Interest: %.2f\n", numPayments, totalInt)
+
 }
 
 func validateInput(origLoanAmt float64, interest float64, origLoanTerm int, lumpSum float64, monthlyExtra float64, startMonth int) error {
